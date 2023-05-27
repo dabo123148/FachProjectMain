@@ -43,11 +43,15 @@ public class RangedGegner : Gegner
                     //Dies führt zu einer Verschiebung des Ausgangspunktes bei jedem engagement um einen kleinen wert, aber mit patrolling ist es vernachlässigbar
                     //wenn spieler sich den Aufwand macht gegner zu kiten mit dieser distanz, dann sein es ihm gegönnt
                     ReturnedToAgroPunkt = true;
+                    //Wir haben die bewegung zum Patrol punkt abgebrochen, wir nehmen nun also wieder die Patol auf
+                    //Hier könnte man noch einfügen das wir den patrol punkt zurücksetzen, ansonsten skippen wir den angesteuert vor agro
+                    ReadyForPatrol = true;
                 }
             }
             else
             {
                 //Wir sind quasi in ausgangsposition -> wir können patrolieren
+                Patrol();
             }
         }
         //Wir haben ein Ziel, nun wollen wir uns auf das Ziel zu bewegen

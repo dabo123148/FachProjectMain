@@ -36,6 +36,10 @@ public class Gegner : MonoBehaviour
     /// </summary>
     private int CurrentPatrolposition = 0;
     /// <summary>
+    /// Indicates if idletime is over
+    /// </summary>
+    public bool ReadyForPatrol = true;
+    /// <summary>
     /// Falls wir Patroling drinnen haben, dann läuft der Gegner zu einem Punkt und wartet dort IdleTime bevor er zum nächsten Punkt läuft
     /// </summary>
     public int IdleTime = 5;
@@ -108,6 +112,23 @@ public class Gegner : MonoBehaviour
     {
         //movement ist hier
     }
+    public void Patrol()
+    {
+        if (PatrolPoints.Length > 0)
+        {
+            if (Vector3.Distance(transform.position, PatrolPoints[CurrentPatrolposition]) < ZielDistance)
+            {
+                StartCoroutine(PatrolIdle());
+                CurrentPatrolposition++;
+                if (CurrentPatrolposition > PatrolPoints.Length - 1) CurrentPatrolposition = 0;
+            }
+            if (ReadyForPatrol)
+            {
+                ReadyForPatrol = false;
+                Target = PatrolPoints[CurrentPatrolposition];
+            }
+        }
+    }
     public void MoveTo(Vector3 Direction)
     {
         //Debug.LogWarning("MoveTo");
@@ -134,5 +155,10 @@ public class Gegner : MonoBehaviour
         transform.LookAt(new Vector3(Ziel.x, transform.position.y, Ziel.z));
         if (Vector3.Distance(Ziel, transform.position) > ZielDistance)
             transform.Translate(Vector3.forward * MovementSpeed);
+    }
+    IEnumerator PatrolIdle()
+    {
+        yield return new WaitForSeconds(IdleTime);
+        ReadyForPatrol = true;
     }
 }
