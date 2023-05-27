@@ -51,10 +51,7 @@ public class RangedGegner : Gegner
             }
         }
         //Wir haben ein Ziel, nun wollen wir uns auf das Ziel zu bewegen
-        transform.LookAt(new Vector3(Target.x,transform.position.y,Target.z));
-        //Mindestabstand einhalten
-        if(Vector3.Distance(Target,transform.position)>ZielDistance)
-            transform.Translate(Vector3.forward*MovementSpeed);
+        MoveTo(Target);
     }
     private void ReturnToAgroPunkt()
     {

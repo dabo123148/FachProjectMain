@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Gegner : MonoBehaviour
 {
@@ -60,7 +61,7 @@ public class Gegner : MonoBehaviour
     public float AttackRange = 3f;
     public void Initilize()
     {
-        GetComponent<BoxCollider>().size = new Vector3(AgroRange, 1, AgroRange);
+        GetComponent<SphereCollider>().radius = AgroRange;
         SpezilizedInitilize();
     }
     /// <summary>
@@ -106,5 +107,32 @@ public class Gegner : MonoBehaviour
     public virtual void FixedUpdate()
     {
         //movement ist hier
+    }
+    public void MoveTo(Vector3 Direction)
+    {
+        //Debug.LogWarning("MoveTo");
+        Vector3 RealZiel = Direction;
+        NavMeshPath path = new NavMeshPath();
+        Vector3 pathcalculatedat = transform.position;
+        NavMesh.CalculatePath(transform.position, RealZiel, NavMesh.AllAreas, path);
+        Vector3 Ziel;
+        if (path.corners.Length > 0)
+        {
+            Ziel = path.corners[0];
+            int num = 0;
+            while (path.corners.Length > num && Vector3.Distance(Ziel, transform.position) < ZielDistance)
+            {
+                Ziel = path.corners[num];
+                num++;
+            }
+        }
+        else
+        {
+            Debug.LogError("No path found");
+            Ziel = transform.position;
+        }
+        transform.LookAt(new Vector3(Ziel.x, transform.position.y, Ziel.z));
+        if (Vector3.Distance(Ziel, transform.position) > ZielDistance)
+            transform.Translate(Vector3.forward * MovementSpeed);
     }
 }

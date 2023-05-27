@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 7724913030062501202}
   - component: {fileID: 7593213421058415075}
   - component: {fileID: 8191473784898766491}
-  - component: {fileID: 2469704886183806824}
   - component: {fileID: 6272297903753420242}
   - component: {fileID: 995035702309103205}
   - component: {fileID: 5580798556090701496}
+  - component: {fileID: 7469868728450270291}
   m_Layer: 0
   m_Name: RangedGegnerPrefab
   m_TagString: Untagged
@@ -86,20 +86,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &2469704886183806824
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6735192213844856114}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6272297903753420242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,13 +99,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HP: 5
-  MovementSpeed: 1
-  AgroRange: 10
+  MovementSpeed: 0.1
+  AgroRange: 30
   FollowRange: 30
+  Agropunkt: {x: 0, y: 0, z: 0}
+  ReturnedToAgroPunkt: 1
+  ReturningToAgroPunkt: 0
   PatrolPoints: []
   IdleTime: 5
+  Spieler: {fileID: 0}
   ZielDistance: 1.5
-  Target: {x: 0, y: 0}
+  Target: {x: -8, y: 1.51, z: 2}
+  Group: []
+  AttackRange: 5
 --- !u!54 &995035702309103205
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -147,5 +139,18 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 30, y: 1, z: 30}
+  m_Size: {x: 1, y: 2, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!135 &7469868728450270291
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6735192213844856114}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 30
   m_Center: {x: 0, y: 0, z: 0}
