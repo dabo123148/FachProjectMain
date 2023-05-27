@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RangedGegner : Gegner
 {
+    public float EvadeRange = 3;
     public override void FixedUpdate()
     {
         //Bewegungsziel auswählen
@@ -17,11 +18,21 @@ public class RangedGegner : Gegner
             }
             else
             {
+                float Spielerdistance = Vector3.Distance(transform.position, Spieler.transform.position);
                 //Wir wollen zu einem bereicht gehen an dem wir den Gegner angreifen können, falls wir es nicht schon sind
-                if (Vector3.Distance(transform.position, Spieler.transform.position) < AttackRange)
+                if (Spielerdistance < AttackRange)
                 {
-                    //Wir sind in attack Range und ein Ranged Attacker, wir wollen also nicht näher gehen, sondern uns eher entfernen,
-                    Target = transform.position;
+                    //Wir sind in attack Range und ein Ranged Attacker, wir wollen also nicht näher gehen, sondern uns eher am Rand der Angriff Range befinden
+                    Debug.Log(Spielerdistance + " - " + (AttackRange - EvadeRange));
+                    if (Spielerdistance> AttackRange-EvadeRange)
+                    {
+                        Target = transform.position;
+                    }
+                    else
+                    {
+                        //Wir bewegen uns vom Spieler weg, hier ist noch verbesserungspotential(es kann klappen muss aber nicht)
+                        Target = Agropunkt;
+                    }
                     Attack();
                 }
                 else

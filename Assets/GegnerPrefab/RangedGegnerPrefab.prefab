@@ -106,12 +106,14 @@ MonoBehaviour:
   ReturnedToAgroPunkt: 1
   ReturningToAgroPunkt: 0
   PatrolPoints: []
+  ReadyForPatrol: 1
   IdleTime: 5
   Spieler: {fileID: 0}
   ZielDistance: 1.5
   Target: {x: -8, y: 1.51, z: 2}
   Group: []
-  AttackRange: 5
+  AttackRange: 10
+  EvadeRange: 3
 --- !u!54 &995035702309103205
 Rigidbody:
   m_ObjectHideFlags: 0
