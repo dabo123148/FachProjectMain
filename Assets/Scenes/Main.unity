@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: b4b99228ace317f4fbf86b5104e344bc, type: 2}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -674,7 +674,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3384533546750150825, guid: 9f17b9c248ed3084cab781f85e767847, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3
+      value: 1.51
       objectReference: {fileID: 0}
     - target: {fileID: 3384533546750150825, guid: 9f17b9c248ed3084cab781f85e767847, type: 3}
       propertyPath: m_LocalPosition.z
@@ -721,9 +721,33 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6272297903753420242, guid: 5de08bc0c5a3f624ea5e622e672e45aa, type: 3}
+      propertyPath: Target.y
+      value: 1.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 6272297903753420242, guid: 5de08bc0c5a3f624ea5e622e672e45aa, type: 3}
+      propertyPath: Target.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6272297903753420242, guid: 5de08bc0c5a3f624ea5e622e672e45aa, type: 3}
+      propertyPath: AgroRange
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6272297903753420242, guid: 5de08bc0c5a3f624ea5e622e672e45aa, type: 3}
+      propertyPath: AttackRange
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6272297903753420242, guid: 5de08bc0c5a3f624ea5e622e672e45aa, type: 3}
+      propertyPath: MovementSpeed
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 6735192213844856114, guid: 5de08bc0c5a3f624ea5e622e672e45aa, type: 3}
       propertyPath: m_Name
       value: RangedGegnerPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 6735192213844856114, guid: 5de08bc0c5a3f624ea5e622e672e45aa, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7724913030062501202, guid: 5de08bc0c5a3f624ea5e622e672e45aa, type: 3}
       propertyPath: m_RootOrder
@@ -735,7 +759,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7724913030062501202, guid: 5de08bc0c5a3f624ea5e622e672e45aa, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3
+      value: 1.51
       objectReference: {fileID: 0}
     - target: {fileID: 7724913030062501202, guid: 5de08bc0c5a3f624ea5e622e672e45aa, type: 3}
       propertyPath: m_LocalPosition.z

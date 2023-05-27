@@ -9,7 +9,7 @@ public class Gegner : MonoBehaviour
     /// <summary>
     /// Range ab der wir den Spieler angreifen
     /// </summary>
-    public float AgroRange = 10;
+    public float AgroRange = 30;
     /// <summary>
     /// Sobald der Spieler mehr als Follow range von agropunkt weg ist, returnen wir zu agropunkt
     /// </summary>
@@ -17,11 +17,19 @@ public class Gegner : MonoBehaviour
     /// <summary>
     /// Die location an der der Gegner war als der Spieler in AgroRange gegangen ist, Gegner bewegt sich hierhin zurück sobald spieler aus followrange ist
     /// </summary>
-    private Vector2 Agropunkt;
+    public Vector3 Agropunkt;
+    /// <summary>
+    /// Wen wir jedes mal den Agro punkt überschreiben wenn der Spieler in Range kommt, werden wir von unserem ursprungsort entfernt, wir wollen den also nicht immer überschreiben
+    /// </summary>
+    public bool ReturnedToAgroPunkt = true;
+    /// <summary>
+    /// Wir wollen verhindern, das wir in dem Punkt stecken bleiben an dem wir zwischen follow und return hin und herschwanken, wir laufen also zurück solange dies true ist
+    /// </summary>
+    public bool ReturningToAgroPunkt = false;
     /// <summary>
     /// Punkte zwischen denen Gegner hin und her läuft(falls wir so etwas machen wollen), startet immer wieder auf Index0
     /// </summary>
-    public Vector2[] PatrolPoints = new Vector2[0];
+    public Vector3[] PatrolPoints = new Vector3[0];
     /// <summary>
     /// Falls wir Patroling drinnen haben, so gibt dies an, an welchem Punkt wir uns gerade befinden
     /// </summary>
@@ -33,7 +41,7 @@ public class Gegner : MonoBehaviour
     /// <summary>
     /// Wir müssen wissen wo der spieler ist um uns zu ihm bewegen zu können
     /// </summary>
-    private GameObject Spieler;
+    public GameObject Spieler;
     /// <summary>
     /// Wir bewegen uns nicht näher als Zieldistance an target, da wir sonst in z.b. Spieler laufen können
     /// </summary>
@@ -41,14 +49,26 @@ public class Gegner : MonoBehaviour
     /// <summary>
     /// Die Koordinaten an die der Gegner im Moment läuft, läuft nicht wenn in Zieldistance vom Target, muss beim spawnen auf gespawnte Coordinaten gesetzt werden, sonst versuchter er nach 0/0 zu laufen
     /// </summary>
-    public Vector2 Target;
+    public Vector3 Target;
     /// <summary>
     /// Liste anderer Gegner die mit diesem Gegner zusammen gespawned sind, dient dazu das falls ein Gegner aus gruppe agro hat andere mitzunehmen
     /// </summary>
-    private GameObject[] Group = new GameObject[0];
-    public void Initilize(GameObject pSpieler)
+    public GameObject[] Group = new GameObject[0];
+    /// <summary>
+    /// Distanz von der der Gegner angreifen kann
+    /// </summary>
+    public float AttackRange = 3f;
+    public void Initilize()
     {
-        Spieler = pSpieler;
+        GetComponent<BoxCollider>().size = new Vector3(AgroRange, 1, AgroRange);
+        SpezilizedInitilize();
+    }
+    /// <summary>
+    ///     Archer wollen z.b. nicht so naher am spieler sein, deshalb ist Zieldistanz hier in der vererbung verändert, andere Gegner können vl ähnliche changes gebrauchen
+    /// </summary>
+    public virtual void SpezilizedInitilize()
+    {
+
     }
     public void AddGegnerToGroup(GameObject obj)
     {
@@ -61,16 +81,29 @@ public class Gegner : MonoBehaviour
     /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject == Spieler)
+        if (other.gameObject.GetComponent<PlayerController>())
         {
-
+            if (ReturnedToAgroPunkt)
+            {
+                Agropunkt = transform.position;
+                ReturnedToAgroPunkt = false;
+            }
+            Spieler = other.gameObject;
         }
         //Prüfen ob auch mit 2 Kollider Kugeln gehandhabt werden können
+    }
+    //Spieler ist aus agro range draußen, wir ignorieren AgroRange > FollowRange
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.GetComponent<PlayerController>())
+        {
+            Spieler = null;
+        }
     }
     /// <summary>
     /// Entscheidet target für movement, müssen hier in RangedGegner und MeleeGegner anders bewegen, Patrolling ist gleich
     /// </summary>
-    public virtual void Update()
+    public virtual void FixedUpdate()
     {
         //movement ist hier
     }

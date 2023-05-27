@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2469704886183806824}
   - component: {fileID: 6272297903753420242}
   - component: {fileID: 995035702309103205}
+  - component: {fileID: 5580798556090701496}
   m_Layer: 0
   m_Name: RangedGegnerPrefab
   m_TagString: Untagged
@@ -135,3 +136,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &5580798556090701496
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6735192213844856114}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 30, y: 1, z: 30}
+  m_Center: {x: 0, y: 0, z: 0}

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MeleeGegner : Gegner
 {
-    public override void Update()
+    public override void FixedUpdate()
     {
 
     }
