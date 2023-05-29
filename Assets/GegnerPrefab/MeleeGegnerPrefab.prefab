@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 3384533546750150825}
   - component: {fileID: 7743211367594999144}
   - component: {fileID: 5073882855501000503}
-  - component: {fileID: 5975164112928818258}
   - component: {fileID: 5753450151381331958}
   - component: {fileID: 5205633886168258417}
+  - component: {fileID: 125816132}
+  - component: {fileID: 125816133}
   m_Layer: 0
   m_Name: MeleeGegnerPrefab
   m_TagString: Untagged
@@ -85,20 +86,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &5975164112928818258
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7310685450588938521}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5753450151381331958
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -113,7 +100,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &5205633886168258417
 MonoBehaviour:
@@ -128,10 +115,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HP: 5
-  MovementSpeed: 1
-  AgroRange: 10
+  MovementSpeed: 0.1
+  AgroRange: 30
   FollowRange: 30
+  Agropunkt: {x: 0, y: 0, z: 0}
+  ReturnedToAgroPunkt: 1
+  ReturningToAgroPunkt: 0
   PatrolPoints: []
+  ReadyForPatrol: 1
   IdleTime: 5
+  AttackIdleTime: 2
+  ReadyToAttack: 1
+  Spieler: {fileID: 0}
   ZielDistance: 1.5
-  Target: {x: 0, y: 0}
+  Target: {x: 0, y: 0, z: 0}
+  Group: []
+  AttackRange: 3
+  AttackSpeed: 1
+  AttackRunning: 0
+--- !u!65 &125816132
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7310685450588938521}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000001, y: 2, z: 1.0000002}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!135 &125816133
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7310685450588938521}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 30
+  m_Center: {x: 0, y: 0, z: 0}

@@ -4,7 +4,18 @@ using UnityEngine;
 
 public class RangedGegner : Gegner
 {
+    /// <summary>
+    /// Wir versuchen nicht näher als Attackrange-Evaderange an spieler zu gehen sonst entfernen wir uns von spieler um am rand der attackrange zu bleiben
+    /// </summary>
     public float EvadeRange = 3;
+    /// <summary>
+    /// Spell oder Arraw mit denen der RangedGegner angreift
+    /// </summary>
+    public Transform RangedAttack;
+    /// <summary>
+    /// Koordinaten wo rangedattack spawned, z.b. bogen oder zauberstab
+    /// </summary>
+    public Vector3 AttackOffset;
     public override void FixedUpdate()
     {
         //Bewegungsziel auswählen
@@ -23,7 +34,6 @@ public class RangedGegner : Gegner
                 if (Spielerdistance < AttackRange)
                 {
                     //Wir sind in attack Range und ein Ranged Attacker, wir wollen also nicht näher gehen, sondern uns eher am Rand der Angriff Range befinden
-                    Debug.Log(Spielerdistance + " - " + (AttackRange - EvadeRange));
                     if (Spielerdistance> AttackRange-EvadeRange)
                     {
                         Target = transform.position;
@@ -68,21 +78,16 @@ public class RangedGegner : Gegner
         //Wir haben ein Ziel, nun wollen wir uns auf das Ziel zu bewegen
         MoveTo(Target);
     }
-    private void ReturnToAgroPunkt()
-    {
-        Target = Agropunkt;
-        if (Vector3.Distance(Agropunkt, transform.position) < ZielDistance + 1)
-        {
-            ReturningToAgroPunkt = false;
-        }
-    }
     public override void SpezilizedInitilize()
     {
         ZielDistance = 3;
         AttackRange = AgroRange * 0.75f;
     }
-    private void Attack()
+    public override void SpezilizedAttack()
     {
-
+        transform.LookAt(new Vector3(Spieler.transform.position.x, transform.position.y, Spieler.transform.position.z));
+        GameObject obj = GameObject.Instantiate(RangedAttack.gameObject);
+        obj.GetComponent<Bullet>().Initilize(false, transform.forward, AttackSpeed, AttackRange / AttackSpeed);
+        obj.transform.position = transform.position + AttackOffset;
     }
 }

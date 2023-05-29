@@ -5,8 +5,14 @@ using UnityEngine.AI;
 
 public class Gegner : MonoBehaviour
 {
+    /// <summary>
+    /// Leben
+    /// </summary>
     public int HP = 5;
-    public float MovementSpeed = 1;
+    /// <summary>
+    /// Bewegungstempo
+    /// </summary>
+    public float MovementSpeed = 0.1f;
     /// <summary>
     /// Range ab der wir den Spieler angreifen
     /// </summary>
@@ -42,7 +48,15 @@ public class Gegner : MonoBehaviour
     /// <summary>
     /// Falls wir Patroling drinnen haben, dann läuft der Gegner zu einem Punkt und wartet dort IdleTime bevor er zum nächsten Punkt läuft
     /// </summary>
-    public int IdleTime = 5;
+    public float IdleTime = 5;
+    /// <summary>
+    /// TimeBetwennAttacks
+    /// </summary>
+    public float AttackIdleTime = 2;
+    /// <summary>
+    /// Idicates if attack is off cooldown
+    /// </summary>
+    public bool ReadyToAttack = true;
     /// <summary>
     /// Wir müssen wissen wo der spieler ist um uns zu ihm bewegen zu können
     /// </summary>
@@ -63,6 +77,10 @@ public class Gegner : MonoBehaviour
     /// Distanz von der der Gegner angreifen kann
     /// </summary>
     public float AttackRange = 3f;
+    /// <summary>
+    /// Speed of speels and arrows
+    /// </summary>
+    public float AttackSpeed = 1;
     public void Initilize()
     {
         GetComponent<SphereCollider>().radius = AgroRange;
@@ -74,6 +92,26 @@ public class Gegner : MonoBehaviour
     public virtual void SpezilizedInitilize()
     {
 
+    }
+    public void Attack()
+    {
+        if (ReadyToAttack)
+        {
+            StartCoroutine(AttackIdle());
+            SpezilizedAttack();
+        }
+    }
+    public virtual void SpezilizedAttack()
+    {
+
+    }
+    public void ReturnToAgroPunkt()
+    {
+        Target = Agropunkt;
+        if (Vector3.Distance(Agropunkt, transform.position) < ZielDistance + 1)
+        {
+            ReturningToAgroPunkt = false;
+        }
     }
     public void AddGegnerToGroup(GameObject obj)
     {
@@ -95,7 +133,15 @@ public class Gegner : MonoBehaviour
             }
             Spieler = other.gameObject;
         }
-        //Prüfen ob auch mit 2 Kollider Kugeln gehandhabt werden können
+        if (other.gameObject.GetComponent<Bullet>() && other.gameObject.GetComponent<Bullet>().PlayerBullet && Vector3.Distance(other.gameObject.transform.position,transform.position)<=1)
+        {
+            HP--;
+            Destroy(other.gameObject);
+            if (HP == 0)
+            {
+                Destroy(gameObject);
+            }
+        }
     }
     //Spieler ist aus agro range draußen, wir ignorieren AgroRange > FollowRange
     private void OnTriggerExit(Collider other)
@@ -156,9 +202,15 @@ public class Gegner : MonoBehaviour
         if (Vector3.Distance(Ziel, transform.position) > ZielDistance)
             transform.Translate(Vector3.forward * MovementSpeed);
     }
-    IEnumerator PatrolIdle()
+    public IEnumerator PatrolIdle()
     {
         yield return new WaitForSeconds(IdleTime);
         ReadyForPatrol = true;
+    }
+    public IEnumerator AttackIdle()
+    {
+        ReadyToAttack = false;
+        yield return new WaitForSeconds(AttackIdleTime);
+        ReadyToAttack = true;
     }
 }

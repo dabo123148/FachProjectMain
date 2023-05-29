@@ -98,22 +98,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33ec42097493d1341a9dcb4b5527c28e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 5
+  HP: 3
   MovementSpeed: 0.1
   AgroRange: 30
   FollowRange: 30
   Agropunkt: {x: 0, y: 0, z: 0}
   ReturnedToAgroPunkt: 1
   ReturningToAgroPunkt: 0
-  PatrolPoints: []
+  PatrolPoints:
+  - {x: -8, y: 1.51, z: 2}
+  - {x: 20, y: 1.51, z: 2}
+  - {x: -10, y: 1.51, z: -20}
   ReadyForPatrol: 1
   IdleTime: 5
+  AttackIdleTime: 2
+  ReadyToAttack: 1
   Spieler: {fileID: 0}
   ZielDistance: 1.5
   Target: {x: -8, y: 1.51, z: 2}
   Group: []
   AttackRange: 10
+  AttackSpeed: 0.4
   EvadeRange: 3
+  RangedAttack: {fileID: 529643696990195728, guid: 17e164b3e1205684e9a918f830b4a440, type: 3}
+  AttackOffset: {x: 0, y: 0, z: 0}
 --- !u!54 &995035702309103205
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -128,7 +136,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!65 &5580798556090701496
 BoxCollider:
@@ -138,7 +146,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6735192213844856114}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 2, z: 1}
