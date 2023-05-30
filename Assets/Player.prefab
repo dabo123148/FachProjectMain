@@ -5317,7 +5317,8 @@ MonoBehaviour:
   ShootDelay: 0.6
   BulletSpeed: 1
   BulletLifeTime: 5
-  Bullet: {fileID: 0}
+  Bullet: {fileID: 529643696990195728, guid: 17e164b3e1205684e9a918f830b4a440, type: 3}
+  HP: 5
 --- !u!54 &1428492247208013879
 Rigidbody:
   m_ObjectHideFlags: 0

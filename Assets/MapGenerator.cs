@@ -2,6 +2,7 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -22,7 +23,12 @@ public class MapGenerator : MonoBehaviour
 
     //the map itself
     int[,] map;
-
+    public int GegnerAmount = 10;
+    /// <summary>
+    /// Area around the player in which no enemy can spawn
+    /// </summary>
+    public float SpawnSafeZone = 35;
+    public Transform[] GegnerPrefabs;
     //generate a map at the start of the game
     void Start(){
         GenerateMap();
@@ -51,8 +57,42 @@ public class MapGenerator : MonoBehaviour
         }
         MeshGenerator meshGen = GetComponent<MeshGenerator>();
         meshGen.GenerateMesh(borderedMap, 1);
+        //Spieler auf map setzen
+        int playerx = Random.Range(0, height);
+        int playery = Random.Range(0,width);
+        while(map[playerx, playery] != 0)
+        {
+            playerx = Random.Range(0, height);
+            playery = Random.Range(0, width);
+        }
+        GameObject.FindObjectOfType<PlayerController>().gameObject.transform.position = CoordToWorldSpawn(new Coord(playerx, playery));
+        //Gegner spawnen
+        while (GegnerAmount>0)
+        {
+            int gegnerx = Random.Range(0, height);
+            int gegnery = Random.Range(0, width);
+            if(map[gegnerx, gegnery] == 0 && Vector2.Distance(new Vector2(playerx,playery),new Vector2(gegnerx,gegnery))>SpawnSafeZone)
+            {
+                GegnerAmount--;
+                SpawnGegner(gegnerx, gegnery);
+                map[gegnerx, gegnery] = -1;
+            }
+        }
     }
-
+    private bool canSpawn(int x,int y)
+    {
+        if (x > 1 && x < height - 1 && y > 1 && y < width - 1)
+        {
+            if (map[x, y - 1] == 0 && map[x - 1, y - 1] == 0 && map[x + 1, y - 1] == 0 && map[x - 1, y + 1] == 0 && map[x, y + 1] == 0 && map[x + 1, y + 1] == 0 && map[x - 1, y] == 0 && map[x + 1, y] == 0) return true;
+        }
+        return false;
+    }
+    private void SpawnGegner(int posx,int posy)
+    {
+        GameObject obj = GameObject.Instantiate(GegnerPrefabs[Random.Range(0,GegnerPrefabs.Length)].gameObject);
+        obj.GetComponent<Gegner>().Initilize();
+        obj.transform.position = CoordToWorldSpawn(new Coord(posx,posy));
+    }
     //fill map with random 0's and 1's depending on noisePercent
     void FillMapRandom(){
         if(useRandomSeed){
@@ -323,6 +363,10 @@ public class MapGenerator : MonoBehaviour
     //helper function transforming a given Coord into an Vector3
     Vector3 CoordToWorldPoint(Coord tile){
         return new Vector3(-width/2 +.5f + tile.tileX, 2, -height/2 + .5f + tile.tileY);
+    }
+    Vector3 CoordToWorldSpawn(Coord tile)
+    {
+        return new Vector3(CoordToWorldPoint(tile).x, -3, CoordToWorldPoint(tile).z);
     }
 
     //a Room contains all coordiantes Coord of an closed area

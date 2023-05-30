@@ -192,10 +192,12 @@ public class Gegner : MonoBehaviour
                 Ziel = path.corners[num];
                 num++;
             }
+            Debug.Log("Wir haben einen path " + transform.position);
+            gameObject.name = "Gegner mit Path";
         }
         else
         {
-            Debug.LogError("No path found");
+            gameObject.name = "No Path Gegner";
             Ziel = transform.position;
         }
         transform.LookAt(new Vector3(Ziel.x, transform.position.y, Ziel.z));

@@ -123,37 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: b4b99228ace317f4fbf86b5104e344bc, type: 2}
---- !u!1 &125816131 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7310685450588938521, guid: 9f17b9c248ed3084cab781f85e767847, type: 3}
-  m_PrefabInstance: {fileID: 5097804950450833459}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &125816132
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 125816131}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.0000001, y: 2, z: 1.0000002}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &125816133
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 125816131}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 30
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1122,10 +1091,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 1428492247208013866, guid: 9acad882c9880e44082e2a1dbe3fd938, type: 3}
-      propertyPath: Bullet
-      value: 
-      objectReference: {fileID: 529643696990195728, guid: 17e164b3e1205684e9a918f830b4a440, type: 3}
     - target: {fileID: 1428492247208013878, guid: 9acad882c9880e44082e2a1dbe3fd938, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -1179,6 +1144,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1745307868470548743, guid: 9f17b9c248ed3084cab781f85e767847, type: 3}
+      propertyPath: m_PlayAutomatically
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3384533546750150825, guid: 9f17b9c248ed3084cab781f85e767847, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -1223,24 +1192,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5205633886168258417, guid: 9f17b9c248ed3084cab781f85e767847, type: 3}
-      propertyPath: AgroRange
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 5205633886168258417, guid: 9f17b9c248ed3084cab781f85e767847, type: 3}
-      propertyPath: MovementSpeed
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5753450151381331958, guid: 9f17b9c248ed3084cab781f85e767847, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
     - target: {fileID: 7310685450588938521, guid: 9f17b9c248ed3084cab781f85e767847, type: 3}
       propertyPath: m_Name
       value: MeleeGegnerPrefab
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5975164112928818258, guid: 9f17b9c248ed3084cab781f85e767847, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f17b9c248ed3084cab781f85e767847, type: 3}
 --- !u!1001 &9138205793000791502
 PrefabInstance:
