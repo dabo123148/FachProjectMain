@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour
         HP -= damage;
         if (HP <= 0)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
         }
     }
 }
