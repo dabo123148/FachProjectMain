@@ -114,7 +114,7 @@ NavMeshSettings:
     maxJumpAcrossDistance: 0
     minRegionArea: 2
     manualCellSize: 1
-    cellSize: 0.01666667
+    cellSize: 0.1666667
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
@@ -153,8 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e890f6b714714492a12643cf57305c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seed: 
-  useRandomSeed: 1
+  seed: 638218612801098359
+  useRandomSeed: 0
   noisePercent: 46
   CAIterations: 5
   height: 200
