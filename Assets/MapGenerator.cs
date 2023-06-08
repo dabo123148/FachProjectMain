@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
-
+using UnityEngine.AI;
 public class MapGenerator : MonoBehaviour
 {
     //set seed to generate the same map again
@@ -32,8 +32,50 @@ public class MapGenerator : MonoBehaviour
     //generate a map at the start of the game
     void Start(){
         GenerateMap();
+        GenerateNavMesh();
     }
+    public void GenerateNavMesh()
+    {
+        // Use this if you want to clear existing
+        NavMesh.RemoveAllNavMeshData();
+        var settings = NavMesh.CreateSettings();
+        settings.agentRadius = 1f;
+        var buildSources = new List<NavMeshBuildSource>();
+        // create floor as passable area
+        for(int a = 0; a < height; a++)
+        {
+            for(int b = 0; b < width; b++)
+            {
+                if(map[a,b]==0 || map[a, b] == -1)
+                {
+                    var floor = new NavMeshBuildSource
+                    {
+                        transform = Matrix4x4.TRS(CoordToNavMesh(a,b), Quaternion.identity, Vector3.one),
+                        shape = NavMeshBuildSourceShape.Box,
+                        size = new Vector3(1, 1, 1),
+                    };
+                    buildSources.Add(floor);
+                }
+            }
+        }
 
+        // Create obstacle 
+        /*const int OBSTACLE = 1 << 0;
+        var obstacle = new NavMeshBuildSource
+        {
+            transform = Matrix4x4.TRS(new Vector3(3, 0, 3), Quaternion.identity, Vector3.one),
+            shape = NavMeshBuildSourceShape.Box,
+            size = new Vector3(1, 1, 1),
+            area = OBSTACLE
+        };
+        buildSources.Add(obstacle);*/
+
+        // build navmesh
+        NavMeshData built = NavMeshBuilder.BuildNavMeshData(
+            settings, buildSources, new Bounds(Vector3.zero, new Vector3(width*2, 100, height*2)),
+            new Vector3(0, 0, 0), Quaternion.identity);
+        NavMesh.AddNavMeshData(built);
+    }
     //generate map with given size
     void GenerateMap(){
         map = new int[width,height];
@@ -366,7 +408,11 @@ public class MapGenerator : MonoBehaviour
     }
     Vector3 CoordToWorldSpawn(Coord tile)
     {
-        return new Vector3(CoordToWorldPoint(tile).x, -3, CoordToWorldPoint(tile).z);
+        return new Vector3(-width / 2 + .5f + tile.tileX, -3, -height / 2 + .5f + tile.tileY);
+    }
+    Vector3 CoordToNavMesh(int a,int b)
+    {
+        return new Vector3(-width / 2 + .5f + a, -4, -height / 2 + .5f + b);
     }
 
     //a Room contains all coordiantes Coord of an closed area

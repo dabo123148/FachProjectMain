@@ -215,4 +215,5 @@ public class Gegner : MonoBehaviour
         yield return new WaitForSeconds(AttackIdleTime);
         ReadyToAttack = true;
     }
+
 }
