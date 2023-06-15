@@ -23,6 +23,7 @@ public class MeshGenerator : MonoBehaviour
         outlines.Clear();
         checkedVertices.Clear();
         triangleDictonary.Clear();
+        Destroy(walls.GetComponent<MeshCollider>());
         squareGrid = new SquareGrid(map, squareSize);
         vertices = new List<Vector3>();
         triangles = new List<int>();
@@ -37,6 +38,14 @@ public class MeshGenerator : MonoBehaviour
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();
         mesh.RecalculateNormals();
+        int tileAmount = 10;
+        Vector2[] uvs = new Vector2[vertices.Count];
+        for (int i =0; i < vertices.Count; i ++) {
+            float percentX = Mathf.InverseLerp(-map.GetLength(0)/2*squareSize,map.GetLength(0)/2*squareSize,vertices[i].x) * tileAmount;
+            float percentY = Mathf.InverseLerp(-map.GetLength(0)/2*squareSize,map.GetLength(0)/2*squareSize,vertices[i].z) * tileAmount;
+            uvs[i] = new Vector2(percentX,percentY);
+        }
+        mesh.uv = uvs;
         CreateWallMesh();
     }
 
