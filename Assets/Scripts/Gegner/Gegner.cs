@@ -83,7 +83,7 @@ public class Gegner : MonoBehaviour
     public float AttackSpeed = 1;
     public void Initilize()
     {
-        GetComponent<SphereCollider>().radius = AgroRange;
+        GetComponent<SphereCollider>().radius = AgroRange/transform.localScale.y;
         SpezilizedInitilize();
     }
     /// <summary>
@@ -160,6 +160,7 @@ public class Gegner : MonoBehaviour
     }
     public void Patrol()
     {
+
         if (PatrolPoints.Length > 0)
         {
             if (Vector3.Distance(transform.position, PatrolPoints[CurrentPatrolposition]) < ZielDistance)
@@ -192,28 +193,40 @@ public class Gegner : MonoBehaviour
                 Ziel = path.corners[num];
                 num++;
             }
-            Debug.Log("Wir haben einen path " + transform.position);
-            gameObject.name = "Gegner mit Path";
+            //Debug.Log("Wir haben einen path " + transform.position);
+            //gameObject.name = "Gegner mit Path";
         }
         else
         {
-            gameObject.name = "No Path Gegner";
+            //gameObject.name = "No Path Gegner";
             Ziel = transform.position;
         }
         transform.LookAt(new Vector3(Ziel.x, transform.position.y, Ziel.z));
         if (Vector3.Distance(Ziel, transform.position) > ZielDistance)
             transform.Translate(Vector3.forward * MovementSpeed);
+        if (GetComponent<Animator>().GetInteger("State")==0)
+        {
+            GetComponent<Animator>().SetInteger("State",1);
+            GetComponent<Animator>().Play("Walk");
+        }
     }
     public IEnumerator PatrolIdle()
     {
+        GetComponent<Animator>().SetInteger("State", 0);
         yield return new WaitForSeconds(IdleTime);
         ReadyForPatrol = true;
     }
     public IEnumerator AttackIdle()
     {
         ReadyToAttack = false;
+        GetComponent<Animator>().Play("Shoot");
+        GetComponent<Animator>().SetInteger("State", 1);
         yield return new WaitForSeconds(AttackIdleTime);
         ReadyToAttack = true;
+    }
+    public void VoidAnimationFunctionEvent()
+    {
+
     }
 
 }

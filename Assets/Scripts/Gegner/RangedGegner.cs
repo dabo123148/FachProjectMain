@@ -16,6 +16,7 @@ public class RangedGegner : Gegner
     /// Koordinaten wo rangedattack spawned, z.b. bogen oder zauberstab
     /// </summary>
     public Vector3 AttackOffset;
+    public float LoadingDelay = 0.21f;
     public override void FixedUpdate()
     {
         //Bewegungsziel auswählen
@@ -76,15 +77,29 @@ public class RangedGegner : Gegner
             }
         }
         //Wir haben ein Ziel, nun wollen wir uns auf das Ziel zu bewegen
-        MoveTo(Target);
+        if (Vector3.Distance(Target, transform.position) > ZielDistance)
+        {
+            MoveTo(Target);
+        }
+        else
+        {
+            GetComponent<Animator>().SetInteger("State", 0);
+            GetComponent<Animator>().Play("Idle");
+        }
     }
     public override void SpezilizedInitilize()
     {
         ZielDistance = 3;
         AttackRange = AgroRange * 0.75f;
+        GetComponent<Animator>().SetFloat("AttackSpeedMultipler", AttackSpeed);
     }
     public override void SpezilizedAttack()
     {
+        StartCoroutine(AttackDelay());
+    }
+    private IEnumerator AttackDelay()
+    {
+        yield return new WaitForSeconds(LoadingDelay);
         transform.LookAt(new Vector3(Spieler.transform.position.x, transform.position.y, Spieler.transform.position.z));
         GameObject obj = GameObject.Instantiate(RangedAttack.gameObject);
         obj.GetComponent<Bullet>().Initilize(false, transform.forward, AttackSpeed, AttackRange / AttackSpeed);
