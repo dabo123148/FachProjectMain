@@ -12,6 +12,8 @@ public class MeshGenerator : MonoBehaviour
     List<int> triangles;
     public MeshFilter walls;
     public MeshFilter dungeon;
+    public float squareSizeP;
+    public float mapLenghtP;
 
     //those three datastructures are used to define how the 3D walls are to be built 
     Dictionary<int, List<Triangle>> triangleDictonary = new Dictionary<int, List<Triangle>>();
@@ -38,6 +40,8 @@ public class MeshGenerator : MonoBehaviour
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();
         mesh.RecalculateNormals();
+        squareSizeP = squareSize;
+        mapLenghtP = map.GetLength(0);
         int tileAmount = 10;
         Vector2[] uvs = new Vector2[vertices.Count];
         for (int i =0; i < vertices.Count; i ++) {
@@ -272,8 +276,24 @@ public class MeshGenerator : MonoBehaviour
         wallMesh.vertices = wallVertices.ToArray();
         wallMesh.triangles = wallTriangles.ToArray();
         walls.mesh = wallMesh;
+        float textureScale = walls.gameObject.GetComponentInChildren<MeshRenderer> ().material.mainTextureScale.x;
+        float increment = (textureScale / mapLenghtP);
+        Vector2[] uvs = new Vector2[wallMesh.vertices.Length];
+        float[] uvEntries = new float[]{0.5f,increment}; 
+
+        for (int i = 0; i < wallMesh.vertices.Length; i++) 
+        {
+        float percentY = Mathf.InverseLerp ((-wallHeight) * squareSizeP, 0, wallMesh.vertices [i].y) * 30 * (wallHeight / mapLenghtP);
+        uvs [i] = new Vector2(uvEntries[i % 2],percentY);
+        }
         MeshCollider wallCollider = walls.gameObject.AddComponent<MeshCollider>();
         wallCollider.sharedMesh = wallMesh;
+        wallMesh.uv = uvs;
+        wallCollider.sharedMesh = wallMesh;
+        walls.mesh = wallMesh;
+
+    //floor.transform.position = new Vector3 (floor.transform.position.x, -wallHeight, floor.transform.position.z);
+        
     }
 
     //one node of a square
