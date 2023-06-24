@@ -1,3 +1,4 @@
+using MBT;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,10 +30,6 @@ public class Gegner : MonoBehaviour
     /// Wen wir jedes mal den Agro punkt überschreiben wenn der Spieler in Range kommt, werden wir von unserem ursprungsort entfernt, wir wollen den also nicht immer überschreiben
     /// </summary>
     public bool ReturnedToAgroPunkt = true;
-    /// <summary>
-    /// Wir wollen verhindern, das wir in dem Punkt stecken bleiben an dem wir zwischen follow und return hin und herschwanken, wir laufen also zurück solange dies true ist
-    /// </summary>
-    public bool ReturningToAgroPunkt = false;
     /// <summary>
     /// Punkte zwischen denen Gegner hin und her läuft(falls wir so etwas machen wollen), startet immer wieder auf Index0
     /// </summary>
@@ -78,11 +75,12 @@ public class Gegner : MonoBehaviour
     /// </summary>
     public float AttackRange = 3f;
     /// <summary>
-    /// Speed of speels and arrows
+    /// Speed of speels and arrows and attack animations
     /// </summary>
     public float AttackSpeed = 1;
     public void Initilize()
     {
+        Target = transform.position;
         GetComponent<SphereCollider>().radius = AgroRange/transform.localScale.y;
         SpezilizedInitilize();
     }
@@ -93,10 +91,17 @@ public class Gegner : MonoBehaviour
     {
 
     }
+    public bool AttackPossible()
+    {
+        if (gameObject.GetComponent<Gegner>().AttackReady() && Spieler!=null && Vector3.Distance(transform.position,Spieler.transform.position)<AttackRange) return true;
+        return false;
+    }
     public void Attack()
     {
         if (ReadyToAttack)
         {
+            GetComponent<Animator>().SetFloat("AttackSpeedMultipler", AttackSpeed);
+            Target = transform.position;
             StartCoroutine(AttackIdle());
             SpezilizedAttack();
         }
@@ -105,12 +110,21 @@ public class Gegner : MonoBehaviour
     {
 
     }
+    public void SetAgroPunkt()
+    {
+        Agropunkt = transform.position;
+    }
     public void ReturnToAgroPunkt()
     {
         Target = Agropunkt;
         if (Vector3.Distance(Agropunkt, transform.position) < ZielDistance + 1)
         {
-            ReturningToAgroPunkt = false;
+            //Dies führt zu einer Verschiebung des Ausgangspunktes bei jedem engagement um einen kleinen wert, aber mit patrolling ist es vernachlässigbar
+            //wenn spieler sich den Aufwand macht gegner zu kiten mit dieser distanz, dann sein es ihm gegönnt
+            ReturnedToAgroPunkt = true;
+            //Wir haben die bewegung zum Patrol punkt abgebrochen, wir nehmen nun also wieder die Patol auf
+            //Hier könnte man noch einfügen das wir den patrol punkt zurücksetzen, ansonsten skippen wir den angesteuert vor agro
+            ReadyForPatrol = true;
         }
     }
     public void AddGegnerToGroup(GameObject obj)
@@ -126,11 +140,6 @@ public class Gegner : MonoBehaviour
     {
         if (other.gameObject.GetComponent<PlayerController>())
         {
-            if (ReturnedToAgroPunkt)
-            {
-                Agropunkt = transform.position;
-                ReturnedToAgroPunkt = false;
-            }
             Spieler = other.gameObject;
         }
         if (other.gameObject.GetComponent<Bullet>() && other.gameObject.GetComponent<Bullet>().PlayerBullet && Vector3.Distance(other.gameObject.transform.position,transform.position)<=1)
@@ -151,16 +160,44 @@ public class Gegner : MonoBehaviour
             Spieler = null;
         }
     }
-    /// <summary>
-    /// Entscheidet target für movement, müssen hier in RangedGegner und MeleeGegner anders bewegen, Patrolling ist gleich
-    /// </summary>
-    public virtual void FixedUpdate()
+    public void FixedUpdate()
     {
-        //movement ist hier
+        //Wir haben ein Ziel, nun wollen wir uns auf das Ziel zu bewegen
+        if (Vector3.Distance(Target, transform.position) > ZielDistance)
+        {
+            MoveTo(Target);
+        }
+        else
+        {
+            if (GetComponent<Animator>().GetInteger("State") != 2)
+            {
+                GetComponent<Animator>().SetInteger("State", 0);
+                GetComponent<Animator>().Play("Idle");
+            }
+        }
+    }
+    public void MarkAgroPointAsToVisit()
+    {
+        ReturnedToAgroPunkt = false;
+    } 
+    public bool PlayerInAgroRange()
+    {
+        if (Spieler == null)
+            return false;
+        return true;
+    }
+    public bool PlayerInFollowRange()
+    {
+        if (Spieler == null || Vector3.Distance(Agropunkt, Spieler.transform.position) > FollowRange)
+            return false;
+        return true;
+    }
+    public bool AttackReady()
+    {
+        return ReadyToAttack;
     }
     public void Patrol()
     {
-
         if (PatrolPoints.Length > 0)
         {
             if (Vector3.Distance(transform.position, PatrolPoints[CurrentPatrolposition]) < ZielDistance)
@@ -178,7 +215,6 @@ public class Gegner : MonoBehaviour
     }
     public void MoveTo(Vector3 Direction)
     {
-        //Debug.LogWarning("MoveTo");
         Vector3 RealZiel = Direction;
         NavMeshPath path = new NavMeshPath();
         Vector3 pathcalculatedat = transform.position;
@@ -198,7 +234,7 @@ public class Gegner : MonoBehaviour
         }
         else
         {
-            //gameObject.name = "No Path Gegner";
+            gameObject.name = "No Path Gegner";
             Ziel = transform.position;
         }
         transform.LookAt(new Vector3(Ziel.x, transform.position.y, Ziel.z));
@@ -218,9 +254,10 @@ public class Gegner : MonoBehaviour
     }
     public IEnumerator AttackIdle()
     {
+        Target = transform.position;
         ReadyToAttack = false;
         GetComponent<Animator>().Play("Shoot");
-        GetComponent<Animator>().SetInteger("State", 1);
+        GetComponent<Animator>().SetInteger("State", 2);
         yield return new WaitForSeconds(AttackIdleTime);
         ReadyToAttack = true;
     }

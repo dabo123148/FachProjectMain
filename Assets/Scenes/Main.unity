@@ -162,7 +162,7 @@ MonoBehaviour:
   GegnerAmount: 10
   SpawnSafeZone: 35
   GegnerPrefabs:
-  - {fileID: 3384533546750150825, guid: 9f17b9c248ed3084cab781f85e767847, type: 3}
+  - {fileID: 650643474296724626, guid: 0e9c90b6de7ad144ca88f99a5ca6c5aa, type: 3}
   - {fileID: 2994280643747080417, guid: 91098fc042ef20e438fe831bc92310bb, type: 3}
 --- !u!4 &425828005
 Transform:
@@ -575,6 +575,10 @@ PrefabInstance:
     - target: {fileID: 1428492247208013865, guid: 9acad882c9880e44082e2a1dbe3fd938, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 1428492247208013866, guid: 9acad882c9880e44082e2a1dbe3fd938, type: 3}
+      propertyPath: HP
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 1428492247208013878, guid: 9acad882c9880e44082e2a1dbe3fd938, type: 3}
       propertyPath: m_RootOrder

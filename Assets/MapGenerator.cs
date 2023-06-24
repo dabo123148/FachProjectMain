@@ -113,7 +113,7 @@ public class MapGenerator : MonoBehaviour
         {
             int gegnerx = Random.Range(0, height);
             int gegnery = Random.Range(0, width);
-            if(map[gegnerx, gegnery] == 0 && Vector2.Distance(new Vector2(playerx,playery),new Vector2(gegnerx,gegnery))>SpawnSafeZone)
+            if(canSpawn(gegnerx,gegnery) && Vector2.Distance(new Vector2(playerx,playery),new Vector2(gegnerx,gegnery))>SpawnSafeZone)
             {
                 GegnerAmount--;
                 SpawnGegner(gegnerx, gegnery);
@@ -125,15 +125,29 @@ public class MapGenerator : MonoBehaviour
     {
         if (x > 1 && x < height - 1 && y > 1 && y < width - 1)
         {
-            if (map[x, y - 1] == 0 && map[x - 1, y - 1] == 0 && map[x + 1, y - 1] == 0 && map[x - 1, y + 1] == 0 && map[x, y + 1] == 0 && map[x + 1, y + 1] == 0 && map[x - 1, y] == 0 && map[x + 1, y] == 0) return true;
+            if (map[x, y - 1] == 0 && map[x - 1, y - 1] == 0 && map[x + 1, y - 1] == 0 && map[x - 1, y + 1] == 0 && map[x, y + 1] == 0 && map[x + 1, y + 1] == 0 && map[x - 1, y] == 0 && map[x + 1, y] == 0 && map[x,y]==0) return true;
         }
         return false;
     }
     private void SpawnGegner(int posx,int posy)
     {
         GameObject obj = GameObject.Instantiate(GegnerPrefabs[Random.Range(0,GegnerPrefabs.Length)].gameObject);
-        obj.GetComponent<Gegner>().Initilize();
         obj.transform.position = CoordToWorldSpawn(new Coord(posx,posy));
+        obj.GetComponent<Gegner>().Initilize();
+        int PatrollPunkte = Random.Range(0, 3);
+        Vector3[] points = new Vector3[PatrollPunkte];
+        while (PatrollPunkte > 0)
+        {
+            int gegnerx = Random.Range(0, height);
+            int gegnery = Random.Range(0, width);
+            if (canSpawn(gegnerx, gegnery))
+            {
+                PatrollPunkte--;
+                points[PatrollPunkte] = CoordToWorldSpawn(new Coord(gegnerx, gegnery));
+                map[gegnerx, gegnery] = -1;
+            }
+        }
+        obj.GetComponent<Gegner>().PatrolPoints = points;
     }
     //fill map with random 0's and 1's depending on noisePercent
     void FillMapRandom(){
