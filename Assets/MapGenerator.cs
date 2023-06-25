@@ -30,11 +30,13 @@ public class MapGenerator : MonoBehaviour
     public float SpawnSafeZone = 35;
     public Transform[] GegnerPrefabs;
     //generate a map at the start of the game
-    void Start(){
-        GenerateMap();
+    public void SpawnLevel(int Level)
+    {
+        GegnerAmount = Level * GegnerAmount;
+        GenerateMap(Level);
         GenerateNavMesh();
     }
-    public void GenerateNavMesh()
+    private void GenerateNavMesh()
     {
         // Use this if you want to clear existing
         NavMesh.RemoveAllNavMeshData();
@@ -77,7 +79,7 @@ public class MapGenerator : MonoBehaviour
         NavMesh.AddNavMeshData(built);
     }
     //generate map with given size
-    void GenerateMap(){
+    private void GenerateMap(int Level){
         map = new int[width,height];
         //filling the map array with random 0's and 1's
         FillMapRandom();
@@ -109,6 +111,7 @@ public class MapGenerator : MonoBehaviour
         }
         GameObject.FindObjectOfType<PlayerController>().gameObject.transform.position = CoordToWorldSpawn(new Coord(playerx, playery));
         //Gegner spawnen
+        int FailTimeout = 0;
         while (GegnerAmount>0)
         {
             int gegnerx = Random.Range(0, height);
@@ -116,8 +119,18 @@ public class MapGenerator : MonoBehaviour
             if(canSpawn(gegnerx,gegnery) && Vector2.Distance(new Vector2(playerx,playery),new Vector2(gegnerx,gegnery))>SpawnSafeZone)
             {
                 GegnerAmount--;
-                SpawnGegner(gegnerx, gegnery);
+                SpawnGegner(gegnerx, gegnery, Level);
                 map[gegnerx, gegnery] = -1;
+                FailTimeout = 0;
+            }
+            else
+            {
+                FailTimeout++;
+            }
+            if(FailTimeout > 500)
+            {
+                GegnerAmount = 0;
+                Debug.LogError("Failed to often to find a spawnpoint");
             }
         }
     }
@@ -129,12 +142,13 @@ public class MapGenerator : MonoBehaviour
         }
         return false;
     }
-    private void SpawnGegner(int posx,int posy)
+    private void SpawnGegner(int posx,int posy,int Level)
     {
         GameObject obj = GameObject.Instantiate(GegnerPrefabs[Random.Range(0,GegnerPrefabs.Length)].gameObject);
-        obj.transform.position = CoordToWorldSpawn(new Coord(posx,posy));
+        obj.transform.position = CoordToWorldGegnerSpawn(new Coord(posx,posy),obj);
         obj.GetComponent<Gegner>().Initilize();
-        int PatrollPunkte = Random.Range(0, 3);
+        int PatrollPunkte = Level - 1;
+        //int PatrollPunkte = Random.Range(0, 3);
         Vector3[] points = new Vector3[PatrollPunkte];
         while (PatrollPunkte > 0)
         {
@@ -143,14 +157,14 @@ public class MapGenerator : MonoBehaviour
             if (canSpawn(gegnerx, gegnery))
             {
                 PatrollPunkte--;
-                points[PatrollPunkte] = CoordToWorldSpawn(new Coord(gegnerx, gegnery));
+                points[PatrollPunkte] = CoordToWorldGegnerSpawn(new Coord(gegnerx, gegnery),obj);
                 map[gegnerx, gegnery] = -1;
             }
         }
         obj.GetComponent<Gegner>().PatrolPoints = points;
     }
     //fill map with random 0's and 1's depending on noisePercent
-    void FillMapRandom(){
+    private void FillMapRandom(){
         if(useRandomSeed){
             seed = System.DateTime.Now.Ticks.ToString();
         }
@@ -167,7 +181,7 @@ public class MapGenerator : MonoBehaviour
     }
 
     //use CA to smooth the map
-    void SmoothMap(){
+    private void SmoothMap(){
         for(int x = 0; x < width ; x++){
             for(int y = 0; y < height; y++){
                 int surroundingWallTiles = GetSurroundingWallTiles(x,y);
@@ -181,7 +195,7 @@ public class MapGenerator : MonoBehaviour
     }
 
     //function to count how many 1's surround the selected tile
-    int GetSurroundingWallTiles(int posX, int posY){
+    private int GetSurroundingWallTiles(int posX, int posY){
         int count = 0;
         for(int x = posX -1; x <= posX +1; x++ ){
             for(int y = posY -1; y <= posY +1; y++){
@@ -209,7 +223,7 @@ public class MapGenerator : MonoBehaviour
     }
 
     //
-    List<Coord> GetRegionTiles(int startX, int startY){
+    private List<Coord> GetRegionTiles(int startX, int startY){
         List<Coord> tiles = new List<Coord>();
         int[,] mapFlags = new int[width,height];
         int tileType = map[startX,startY];
@@ -234,7 +248,7 @@ public class MapGenerator : MonoBehaviour
     }
 
     //function to calculate the area of an Room
-    List<List<Coord>> GetRegions(int tileType){
+    private List<List<Coord>> GetRegions(int tileType){
         List<List<Coord>> regions = new List<List<Coord>>();
         int[,] mapFlags = new int[width, height];
         for(int x = 0; x < width ; x++){
@@ -252,7 +266,7 @@ public class MapGenerator : MonoBehaviour
     }
 
     //function to delete small Rooms or small walls if they are created 
-    void ProcessMap(){
+    private void ProcessMap(){
         List<List<Coord>> wallRegions = GetRegions(1);
         int wallTresholdSize = 50;
         foreach(List<Coord> wallRegion in wallRegions){
@@ -282,13 +296,13 @@ public class MapGenerator : MonoBehaviour
     }
 
     //checls if a coordinate is still on the map
-    bool IsInMapRange(int x, int y){
+    private bool IsInMapRange(int x, int y){
         return x >= 0 && x < width && y >= 0 && y < height;
     }
 
     /*funtion that claculates the two closest Room from all Rooms. It creates two lists of Rooms. One list contains all Rooms that are in some way connected two the MainRoom, the other list contains Rooms that are not connected two the MainRoom. Then it calculates the shortest pathway that would connect those two lists of connected Rooms.
     */
-    void ConnectClosestRooms(List<Room> allRooms, bool forceAccessFromMainRoom = false){
+    private void ConnectClosestRooms(List<Room> allRooms, bool forceAccessFromMainRoom = false){
         int bestDistance = 0;
         Coord bestTileA = new Coord();
         Coord bestTileB = new Coord();
@@ -351,7 +365,7 @@ public class MapGenerator : MonoBehaviour
     }
 
     //function that connects two Rooms and creates the necessary path between them
-    void CreatePassage(Room roomA, Room roomB, Coord tileA, Coord tileB){
+    private void CreatePassage(Room roomA, Room roomB, Coord tileA, Coord tileB){
         Room.ConnectRooms(roomA, roomB);
         List<Coord> line = GetLine(tileA, tileB);
         foreach(Coord c in line){
@@ -361,7 +375,7 @@ public class MapGenerator : MonoBehaviour
     }
 
     //transforming the walls that are block the way between two Rooms 
-    void DrawCircle(Coord c, int r){
+    private void DrawCircle(Coord c, int r){
         for(int x = -r; x <= r; x++){
             for(int y = -r; y <=r; y++){
                 if(x*x + y*y <= r*r){
@@ -377,7 +391,7 @@ public class MapGenerator : MonoBehaviour
 
     /*function calculating the shortest path from one point in the map array to another in the map array. This is used to connect isolated Rooms with the shortest possible way. This works by calculating a straight line between the two points an then changing only one coordinate like x until the differnce to y is great enough so the created path will not go through 2 coordinates at the same time.
     */
-    List<Coord> GetLine(Coord start, Coord end){
+    private List<Coord> GetLine(Coord start, Coord end){
         List<Coord> line = new List<Coord>();
         int x = start.tileX;
         int y = start.tileY;
@@ -417,14 +431,18 @@ public class MapGenerator : MonoBehaviour
     }
 
     //helper function transforming a given Coord into an Vector3
-    Vector3 CoordToWorldPoint(Coord tile){
+    private Vector3 CoordToWorldPoint(Coord tile){
         return new Vector3(-width/2 +.5f + tile.tileX, 2, -height/2 + .5f + tile.tileY);
     }
-    Vector3 CoordToWorldSpawn(Coord tile)
+    private Vector3 CoordToWorldSpawn(Coord tile)
     {
         return new Vector3(-width / 2 + .5f + tile.tileX, -3, -height / 2 + .5f + tile.tileY);
     }
-    Vector3 CoordToNavMesh(int a,int b)
+    private Vector3 CoordToWorldGegnerSpawn(Coord tile,GameObject obj)
+    {
+        return new Vector3(-width / 2 + .5f + tile.tileX, -4.51f+obj.GetComponent<Gegner>().SpawnHight, -height / 2 + .5f + tile.tileY);
+    }
+    private Vector3 CoordToNavMesh(int a,int b)
     {
         return new Vector3(-width / 2 + .5f + a, -4, -height / 2 + .5f + b);
     }

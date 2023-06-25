@@ -78,6 +78,10 @@ public class Gegner : MonoBehaviour
     /// Speed of speels and arrows and attack animations
     /// </summary>
     public float AttackSpeed = 1;
+    /// <summary>
+    /// Nich alle Gegner grafiken sind gleich, manche haben eine höhen verschiebung
+    /// </summary>
+    public float SpawnHight = 1.51f;
     public void Initilize()
     {
         Target = transform.position;
@@ -142,12 +146,13 @@ public class Gegner : MonoBehaviour
         {
             Spieler = other.gameObject;
         }
-        if (other.gameObject.GetComponent<Bullet>() && other.gameObject.GetComponent<Bullet>().PlayerBullet && Vector3.Distance(other.gameObject.transform.position,transform.position)<=1)
+        if (other.gameObject.GetComponent<Bullet>() && other.gameObject.GetComponent<Bullet>().PlayerBullet && Vector2.Distance(new Vector3(other.gameObject.transform.position.x,other.gameObject.transform.position.z),new Vector2(transform.position.x,transform.position.z))<=1.5f)
         {
             HP--;
             Destroy(other.gameObject);
             if (HP == 0)
             {
+                if (GameObject.FindObjectOfType<LevelManagement>()) GameObject.FindObjectOfType<LevelManagement>().OnGegnerDeath();
                 Destroy(gameObject);
             }
         }

@@ -14,7 +14,6 @@ public class MeleeGegner : Gegner
 
         if (Vector3.Distance(transform.position, Spieler.transform.position) > AttackRange)
         {
-            Debug.Log("MoveToPlayer");
             Target = Spieler.transform.position;
         }
         else

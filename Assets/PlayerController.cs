@@ -54,8 +54,10 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(int damage)
     {
         HP -= damage;
+        if (GameObject.FindObjectOfType<LevelManagement>()) GameObject.FindObjectOfType<LevelManagement>().OnPlayerDamage();
         if (HP <= 0)
         {
+            Cursor.lockState = CursorLockMode.None;
             UnityEngine.SceneManagement.SceneManager.LoadScene(0);
         }
     }

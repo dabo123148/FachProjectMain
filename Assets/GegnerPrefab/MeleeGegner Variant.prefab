@@ -869,6 +869,7 @@ MonoBehaviour:
   Group: []
   AttackRange: 3
   AttackSpeed: 1
+  SpawnHight: 0.6
   AttackRunning: 0
 --- !u!114 &817379796
 MonoBehaviour:

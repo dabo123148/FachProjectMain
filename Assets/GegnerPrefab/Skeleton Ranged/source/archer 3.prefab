@@ -1563,11 +1563,12 @@ MonoBehaviour:
   AttackIdleTime: 2
   ReadyToAttack: 1
   Spieler: {fileID: 0}
-  ZielDistance: 1.5
+  ZielDistance: 3
   Target: {x: -8, y: 1.51, z: 2}
   Group: []
   AttackRange: 10
   AttackSpeed: 0.4
+  SpawnHight: 1.51
   EvadeRange: 3
   RangedAttack: {fileID: 529643696990195728, guid: 17e164b3e1205684e9a918f830b4a440, type: 3}
   AttackOffset: {x: 0, y: 0, z: 0}
@@ -1661,7 +1662,7 @@ MonoBehaviour:
     y: 413
     width: 160
     height: 45
-  parent: {fileID: -4101080465951405456, guid: 91098fc042ef20e438fe831bc92310bb, type: 3}
+  parent: {fileID: 0}
   children: []
   behaviourTree: {fileID: 0}
   runtimePriority: 0
@@ -1685,7 +1686,7 @@ MonoBehaviour:
     y: 572
     width: 160
     height: 45
-  parent: {fileID: 847284455, guid: 91098fc042ef20e438fe831bc92310bb, type: 3}
+  parent: {fileID: 0}
   children: []
   behaviourTree: {fileID: 0}
   runtimePriority: 0
@@ -1709,7 +1710,7 @@ MonoBehaviour:
     y: 410
     width: 160
     height: 45
-  parent: {fileID: 847284459, guid: 91098fc042ef20e438fe831bc92310bb, type: 3}
+  parent: {fileID: 0}
   children:
   - {fileID: 847284449}
   - {fileID: 847284475}
@@ -1760,7 +1761,7 @@ MonoBehaviour:
     y: 485
     width: 160
     height: 59
-  parent: {fileID: -4101080465951405456, guid: 91098fc042ef20e438fe831bc92310bb, type: 3}
+  parent: {fileID: 0}
   children: []
   behaviourTree: {fileID: 0}
   runtimePriority: 0
@@ -1883,7 +1884,7 @@ MonoBehaviour:
     y: 574
     width: 160
     height: 45
-  parent: {fileID: 847284455, guid: 91098fc042ef20e438fe831bc92310bb, type: 3}
+  parent: {fileID: 0}
   children: []
   behaviourTree: {fileID: 0}
   runtimePriority: 0
@@ -1992,7 +1993,7 @@ MonoBehaviour:
     y: 412
     width: 160
     height: 45
-  parent: {fileID: 847284459, guid: 91098fc042ef20e438fe831bc92310bb, type: 3}
+  parent: {fileID: 0}
   children: []
   behaviourTree: {fileID: 0}
   runtimePriority: 0
@@ -2606,7 +2607,7 @@ MonoBehaviour:
     y: 409
     width: 160
     height: 45
-  parent: {fileID: 847284459, guid: 91098fc042ef20e438fe831bc92310bb, type: 3}
+  parent: {fileID: 0}
   children:
   - {fileID: 847284471}
   - {fileID: 847284472}

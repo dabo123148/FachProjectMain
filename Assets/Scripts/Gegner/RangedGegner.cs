@@ -46,8 +46,7 @@ public class RangedGegner : Gegner
 
     public override void SpezilizedInitilize()
     {
-        ZielDistance = 3;
-        AttackRange = AgroRange * 0.75f;
+        //ZielDistance = 3;
         GetComponent<Animator>().SetFloat("AttackSpeedMultipler", AttackSpeed);
     }
     public override void SpezilizedAttack()
@@ -57,21 +56,9 @@ public class RangedGegner : Gegner
     private IEnumerator AttackDelay()
     {
         yield return new WaitForSeconds(LoadingDelay);
-        transform.LookAt(new Vector3(Spieler.transform.position.x, transform.position.y, Spieler.transform.position.z));
+        transform.LookAt(new Vector3(Spieler.transform.position.x+Random.Range(-1,1), transform.position.y, Spieler.transform.position.z + Random.Range(-1, 1)));
         GameObject obj = GameObject.Instantiate(RangedAttack.gameObject);
         obj.GetComponent<Bullet>().Initilize(false, transform.forward, AttackSpeed, AttackRange / AttackSpeed);
-        obj.transform.position = transform.position + AttackOffset;
-    }
-    public void PlayerInRangeTest()
-    {
-        Debug.Log("PlayerInRangeTest");
-    }
-    public void PlayerNotInRangeTest()
-    {
-        Debug.Log("PlayerNotInRangeTest");
-    }
-    public void AttackTest()
-    {
-        Debug.Log("AttackTest");
+        obj.transform.position = new Vector3(transform.position.x,Spieler.transform.position.y,transform.position.z) + AttackOffset;
     }
 }
