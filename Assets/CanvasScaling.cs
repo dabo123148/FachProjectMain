@@ -29,16 +29,18 @@ public class CanvasScaling : MonoBehaviour
         if (HPLevelMessage != null)
         {
             int Times = HPLevelMessage.GetComponent<UnityEngine.UI.Text>().text.Split('\n').Length;
+            Debug.Log("Times : " + Times);
+            currentheight += size / 2;
             //We are in a boss or normal level scene
-            HPLevelMessage.GetComponent<RectTransform>().position = new Vector3(Screen.width / 2, currentheight- size * (Times/2), 0);
-            HPLevelMessage.GetComponent<RectTransform>().sizeDelta = new Vector3(Screen.width, size* Times, 0);
+            HPLevelMessage.GetComponent<RectTransform>().position = new Vector3(Screen.width / 2, currentheight- size * (Times), 0);
+            HPLevelMessage.GetComponent<RectTransform>().sizeDelta = new Vector3(Screen.width/2, size* Times, 0);
             currentheight -= size*Times;
         }
         else
         {
             currentheight -= size*2;
             GameOverText.GetComponent<RectTransform>().position = new Vector3(Screen.width / 2, currentheight, 0);
-            GameOverText.GetComponent<RectTransform>().sizeDelta = new Vector3(Screen.width, size*2, 0);
+            GameOverText.GetComponent<RectTransform>().sizeDelta = new Vector3(Screen.width/2, size*2, 0);
             currentheight -= size * 2;
             SetHPMessage.GetComponent<RectTransform>().position = new Vector3(Screen.width / 2- Screen.width / 8, currentheight, 0);
             SetHPMessage.GetComponent<RectTransform>().sizeDelta = new Vector3(Screen.width / 8, size, 0);

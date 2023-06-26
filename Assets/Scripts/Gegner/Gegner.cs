@@ -82,11 +82,32 @@ public class Gegner : MonoBehaviour
     /// Nich alle Gegner grafiken sind gleich, manche haben eine höhen verschiebung
     /// </summary>
     public float SpawnHight = 1.51f;
+    /// <summary>
+    /// Indicates if the gegner has a order to go to OrderedLocation
+    /// </summary>
+    public bool IsOrderedToGoToLocation = false;
+    /// <summary>
+    /// für bossfight, kann der boss gegnern befehlen an bestimmt orte zu gehen, der gegner geht dann direkt zu dem ort
+    /// </summary>
+    private Vector3 OrderedLocation;
     public void Initilize()
     {
         Target = transform.position;
         GetComponent<SphereCollider>().radius = AgroRange/transform.localScale.y;
         SpezilizedInitilize();
+    }
+    public void Order(Vector2 location)
+    {
+        IsOrderedToGoToLocation = true;
+        OrderedLocation = new Vector3(location.x, transform.position.y, location.y);
+    } 
+    public void MoveToOrderLocation()
+    {
+        Target = OrderedLocation;
+        if (Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(OrderedLocation.x, OrderedLocation.z)) < ZielDistance)
+        {
+            IsOrderedToGoToLocation = false;
+        }
     }
     /// <summary>
     ///     Archer wollen z.b. nicht so naher am spieler sein, deshalb ist Zieldistanz hier in der vererbung verändert, andere Gegner können vl ähnliche changes gebrauchen
@@ -265,6 +286,8 @@ public class Gegner : MonoBehaviour
         GetComponent<Animator>().SetInteger("State", 2);
         yield return new WaitForSeconds(AttackIdleTime);
         ReadyToAttack = true;
+        GetComponent<Animator>().Play("Shoot");
+        GetComponent<Animator>().SetInteger("State", 0);
     }
     public void VoidAnimationFunctionEvent()
     {

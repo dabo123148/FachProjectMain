@@ -1460,6 +1460,9 @@ GameObject:
   - component: {fileID: 1560040610}
   - component: {fileID: 1560040619}
   - component: {fileID: 1560040629}
+  - component: {fileID: 1420093145227257428}
+  - component: {fileID: 8072522747170485920}
+  - component: {fileID: -6031303435577951374}
   m_Layer: 0
   m_Name: archer 3
   m_TagString: Untagged
@@ -1569,6 +1572,7 @@ MonoBehaviour:
   AttackRange: 10
   AttackSpeed: 0.4
   SpawnHight: 1.51
+  IsOrderedToGoToLocation: 0
   EvadeRange: 3
   RangedAttack: {fileID: 529643696990195728, guid: 17e164b3e1205684e9a918f830b4a440, type: 3}
   AttackOffset: {x: 0, y: 0, z: 0}
@@ -1639,7 +1643,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b25af8627659c6949b60949c3aa8d91d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedEditorNode: {fileID: 0}
+  selectedEditorNode: {fileID: -6031303435577951374}
   repeatOnFinish: 1
   maxExecutionsPerTick: 1
   parent: {fileID: 0}
@@ -1706,8 +1710,8 @@ MonoBehaviour:
   title: Sequence
   rect:
     serializedVersion: 2
-    x: -12
-    y: 410
+    x: 262
+    y: 384
     width: 160
     height: 45
   parent: {fileID: 0}
@@ -1733,8 +1737,8 @@ MonoBehaviour:
   title: Need to visit agro point?
   rect:
     serializedVersion: 2
-    x: -89
-    y: 571
+    x: 218
+    y: 567
     width: 160
     height: 45
   parent: {fileID: 847284448}
@@ -1757,8 +1761,8 @@ MonoBehaviour:
   title: Attack Range Management
   rect:
     serializedVersion: 2
-    x: -211
-    y: 485
+    x: 119
+    y: 487
     width: 160
     height: 59
   parent: {fileID: 0}
@@ -1989,8 +1993,8 @@ MonoBehaviour:
   title: Patrol
   rect:
     serializedVersion: 2
-    x: 173
-    y: 412
+    x: 475
+    y: 380
     width: 160
     height: 45
   parent: {fileID: 0}
@@ -2632,8 +2636,8 @@ MonoBehaviour:
   title: Go to agro point
   rect:
     serializedVersion: 2
-    x: 80
-    y: 570
+    x: 385
+    y: 572
     width: 160
     height: 45
   parent: {fileID: 847284448}
@@ -2965,11 +2969,172 @@ MonoBehaviour:
   parent: {fileID: 1560040597}
   children:
   - {fileID: 1560040610}
+  - {fileID: 1420093145227257428}
   - {fileID: 847284452}
   behaviourTree: {fileID: 0}
   runtimePriority: 0
   breakpoint: 0
   random: 0
+--- !u!114 &1420093145227257428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2505693322353259099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c78c7da6b00e1b46bad07949050f82f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: Sequence
+  rect:
+    serializedVersion: 2
+    x: -58
+    y: 494
+    width: 160
+    height: 45
+  parent: {fileID: 1560040629}
+  children:
+  - {fileID: 8072522747170485920}
+  - {fileID: -6031303435577951374}
+  behaviourTree: {fileID: 0}
+  runtimePriority: 0
+  breakpoint: 0
+  random: 0
+--- !u!114 &8072522747170485920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2505693322353259099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7d2adc623028774c828aa00b5a43ca5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: Is ordered to move?
+  rect:
+    serializedVersion: 2
+    x: -114
+    y: 571
+    width: 160
+    height: 45
+  parent: {fileID: 1420093145227257428}
+  children: []
+  behaviourTree: {fileID: 0}
+  runtimePriority: 0
+  breakpoint: 0
+--- !u!114 &-6031303435577951374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2505693322353259099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d47807df5b5587e44bfd9aface30c12f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: Go to ordered location
+  rect:
+    serializedVersion: 2
+    x: 48
+    y: 570
+    width: 160
+    height: 45
+  parent: {fileID: 1420093145227257428}
+  children: []
+  behaviourTree: {fileID: 0}
+  runtimePriority: 0
+  breakpoint: 0
+  type: 1
+  transformReference:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 0}
+    key: 
+    constantValue: {fileID: 0}
+  gameObjectReference:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 847284439}
+    key: errorgameobjectprevention
+    constantValue: {fileID: 0}
+  floatReference:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 0}
+    key: 
+    constantValue: 0
+  intReference:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 0}
+    key: 
+    constantValue: 0
+  boolReference:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 0}
+    key: 
+    constantValue: 0
+  stringReference:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 0}
+    key: 
+    constantValue: 
+  vector3Reference:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 0}
+    key: 
+    constantValue: {x: 0, y: 0, z: 0}
+  vector2Reference:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 0}
+    key: 
+    constantValue: {x: 0, y: 0}
+  transformEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  gameObjectEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2505693322353259100}
+        m_TargetAssemblyTypeName: Gegner, Assembly-CSharp
+        m_MethodName: MoveToOrderLocation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  floatEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  intEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  boolEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  stringEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  vector3Event:
+    m_PersistentCalls:
+      m_Calls: []
+  vector2Event:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2643924841359173434
 GameObject:
   m_ObjectHideFlags: 0

@@ -41,7 +41,7 @@ public class MapGenerator : MonoBehaviour
         // Use this if you want to clear existing
         NavMesh.RemoveAllNavMeshData();
         var settings = NavMesh.CreateSettings();
-        settings.agentRadius = 1f;
+        settings.agentRadius = 1.5f;
         var buildSources = new List<NavMeshBuildSource>();
         // create floor as passable area
         for(int a = 0; a < height; a++)
