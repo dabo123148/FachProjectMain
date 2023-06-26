@@ -24,9 +24,9 @@ public class InGameAnzeige : MonoBehaviour
                 float MinDistance = 1000;
                 foreach(Gegner g in GameObject.FindObjectsOfType<Gegner>())
                 {
-                    MinDistance = Mathf.Min(MinDistance, Vector3.Distance(g.transform.position, Spieler.transform.position));
+                    MinDistance = (float)Mathf.Round(Mathf.Min(MinDistance, Vector3.Distance(g.transform.position, Spieler.transform.position)));
                 }
-                Text += "\nNächster Gegner in " + MinDistance + " metern";
+                Text += "\nNÃ¤chster Gegner in " + MinDistance + " Metern";
             }
             Text += "\nLevel: " + Management.CurrentLevel + "\nHP: " + Management.HP;
         }
