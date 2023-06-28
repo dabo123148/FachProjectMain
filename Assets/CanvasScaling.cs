@@ -13,6 +13,7 @@ public class CanvasScaling : MonoBehaviour
     public GameObject SetHPMessage;
     public GameObject GameOverText;
     public GameObject HPLevelMessage;
+    public GameObject DamageMessage;
     void Update()
     {
         if (width != Screen.width || height != Screen.height)
@@ -20,7 +21,7 @@ public class CanvasScaling : MonoBehaviour
             Rescale();
         }
     }
-    void Rescale()
+    public void Rescale()
     {
         width = Screen.width;
         height = Screen.height;
@@ -35,6 +36,8 @@ public class CanvasScaling : MonoBehaviour
             HPLevelMessage.GetComponent<RectTransform>().position = new Vector3(Screen.width / 2, currentheight- size * (Times), 0);
             HPLevelMessage.GetComponent<RectTransform>().sizeDelta = new Vector3(Screen.width/2, size* Times, 0);
             currentheight -= size*Times;
+            DamageMessage.GetComponent<RectTransform>().position = new Vector3(Screen.width / 2, 0+size*4, 0);
+            DamageMessage.GetComponent<RectTransform>().sizeDelta = new Vector3(Screen.width / 2, size * 4, 0);
         }
         else
         {

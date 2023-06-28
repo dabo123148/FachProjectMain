@@ -170,6 +170,7 @@ public class Gegner : MonoBehaviour
         if (other.gameObject.GetComponent<Bullet>() && other.gameObject.GetComponent<Bullet>().PlayerBullet && Vector2.Distance(new Vector3(other.gameObject.transform.position.x,other.gameObject.transform.position.z),new Vector2(transform.position.x,transform.position.z))<=1.5f)
         {
             HP--;
+            GameObject.FindObjectOfType<DamageAnzeige>().AddDamageMessage(HP);
             Destroy(other.gameObject);
             if (HP == 0)
             {
