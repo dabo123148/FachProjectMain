@@ -25,7 +25,7 @@ public class CanvasScaling : MonoBehaviour
     {
         width = Screen.width;
         height = Screen.height;
-        float size = height / 20;
+        float size = height / 10;
         float currentheight = height - size/2;
         if (HPLevelMessage != null)
         {
@@ -41,23 +41,23 @@ public class CanvasScaling : MonoBehaviour
         }
         else
         {
-            currentheight -= size*2;
+            currentheight -= size* 1.25f;
             GameOverText.GetComponent<RectTransform>().position = new Vector3(Screen.width / 2, currentheight, 0);
             GameOverText.GetComponent<RectTransform>().sizeDelta = new Vector3(Screen.width/2, size*2, 0);
-            currentheight -= size * 2;
+            currentheight -= size * 1.25f;
             SetHPMessage.GetComponent<RectTransform>().position = new Vector3(Screen.width / 2- Screen.width / 8, currentheight, 0);
             SetHPMessage.GetComponent<RectTransform>().sizeDelta = new Vector3(Screen.width / 8, size, 0);
             SetHP.GetComponent<RectTransform>().position = new Vector3(Screen.width / 2 + Screen.width / 8, currentheight, 0);
             SetHP.GetComponent<RectTransform>().sizeDelta = new Vector3(Screen.width / 8, size, 0);
-            currentheight -= size * 2;
+            currentheight -= size * 1.25f;
             SetLevelMessage.GetComponent<RectTransform>().position = new Vector3(Screen.width / 2 - Screen.width / 8, currentheight, 0);
             SetLevelMessage.GetComponent<RectTransform>().sizeDelta = new Vector3(Screen.width / 8, size, 0);
             SetLevel.GetComponent<RectTransform>().position = new Vector3(Screen.width / 2 + Screen.width / 8, currentheight, 0);
             SetLevel.GetComponent<RectTransform>().sizeDelta = new Vector3(Screen.width / 8, size, 0);
-            currentheight -= size * 2;
+            currentheight -= size * 1.25f;
             StartGame.GetComponent<RectTransform>().position = new Vector3(Screen.width / 2, currentheight, 0);
             StartGame.GetComponent<RectTransform>().sizeDelta = new Vector3(Screen.width/2, size, 0);
-            currentheight -= size * 2;
+            currentheight -= size * 1.25f;
             //We are in the main menu
 
         }
