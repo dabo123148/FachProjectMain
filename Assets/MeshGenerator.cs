@@ -276,6 +276,7 @@ public class MeshGenerator : MonoBehaviour
         wallMesh.vertices = wallVertices.ToArray();
         wallMesh.triangles = wallTriangles.ToArray();
         walls.mesh = wallMesh;
+        wallMesh.RecalculateNormals();
         float textureScale = walls.gameObject.GetComponentInChildren<MeshRenderer> ().material.mainTextureScale.x;
         float increment = (textureScale / mapLenghtP);
         Vector2[] uvs = new Vector2[wallMesh.vertices.Length];
