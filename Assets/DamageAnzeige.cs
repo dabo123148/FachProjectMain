@@ -8,7 +8,21 @@ public class DamageAnzeige : MonoBehaviour
     public int Lines = 5;
     public void AddDamageMessage(int HPleft)
     {
-        Text += System.DateTime.Now.Hour + ":" + System.DateTime.Now.Minute + ":" + System.DateTime.Now.Second + ":";
+        if (System.DateTime.Now.Hour < 10)
+        {
+            Text += "0";
+        }
+        Text += System.DateTime.Now.Hour + ":";
+        if (System.DateTime.Now.Minute < 10)
+        {
+            Text += "0";
+        }
+        Text += System.DateTime.Now.Minute + ":";
+        if (System.DateTime.Now.Second < 10)
+        {
+            Text += "0";
+        }
+        Text += System.DateTime.Now.Second + ":";
         if (HPleft == 0)
         {
             Text += "Killed enemy\n";

@@ -90,6 +90,7 @@ public class Gegner : MonoBehaviour
     /// für bossfight, kann der boss gegnern befehlen an bestimmt orte zu gehen, der gegner geht dann direkt zu dem ort
     /// </summary>
     private Vector3 OrderedLocation;
+    private Vector3 LastMoveToLocation = new Vector3(0,0,0);
     public void Initilize()
     {
         Target = transform.position;
@@ -242,6 +243,10 @@ public class Gegner : MonoBehaviour
     }
     public void MoveTo(Vector3 Direction)
     {
+        MoveTo(Direction, false);
+    }
+    private void MoveTo(Vector3 Direction,bool recursion)
+    {
         Vector3 RealZiel = Direction;
         NavMeshPath path = new NavMeshPath();
         Vector3 pathcalculatedat = transform.position;
@@ -256,12 +261,23 @@ public class Gegner : MonoBehaviour
                 Ziel = path.corners[num];
                 num++;
             }
+            LastMoveToLocation = new Vector3(Ziel.x, transform.position.y, Ziel.z);
             //Debug.Log("Wir haben einen path " + transform.position);
             //gameObject.name = "Gegner mit Path";
         }
         else
         {
-            gameObject.name = "No Path Gegner";
+            if (recursion)
+            {
+                transform.LookAt(new Vector3(Direction.x, transform.position.y, Direction.z));
+                transform.Translate(Vector3.forward * MovementSpeed);
+            }
+            else
+            {
+                transform.position = LastMoveToLocation;
+                MoveTo(Direction, true);
+            }
+            //gameObject.name = "No Path Gegner";
             Ziel = transform.position;
         }
         transform.LookAt(new Vector3(Ziel.x, transform.position.y, Ziel.z));

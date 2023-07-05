@@ -33,11 +33,11 @@ public class CanvasScaling : MonoBehaviour
             Debug.Log("Times : " + Times);
             currentheight += size / 2;
             //We are in a boss or normal level scene
-            HPLevelMessage.GetComponent<RectTransform>().position = new Vector3(Screen.width / 2, currentheight- size * (Times), 0);
+            HPLevelMessage.GetComponent<RectTransform>().position = new Vector3(Screen.width / 2, currentheight- (size * (Times))/2, 0);
             HPLevelMessage.GetComponent<RectTransform>().sizeDelta = new Vector3(Screen.width/2, size* Times, 0);
             currentheight -= size*Times;
-            DamageMessage.GetComponent<RectTransform>().position = new Vector3(Screen.width / 2, 0+size*4, 0);
-            DamageMessage.GetComponent<RectTransform>().sizeDelta = new Vector3(Screen.width / 2, size * 4, 0);
+            DamageMessage.GetComponent<RectTransform>().position = new Vector3(Screen.width / 2, 0+size*2, 0);
+            DamageMessage.GetComponent<RectTransform>().sizeDelta = new Vector3(Screen.width, size * 4, 0);
         }
         else
         {
